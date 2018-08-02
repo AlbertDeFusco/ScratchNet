@@ -43,8 +43,8 @@ class Layer(object):
 
 
 class Network(object):
-    def __init__(self, features):
-        self.features = features
+    def __init__(self, n_features):
+        self.features = n_features
         self.layers = []
 
     def add_layer(self, nodes, activation=None, **kwargs):
