@@ -56,7 +56,7 @@ fig, axes = plt.subplots(ncols=2, figsize=(16,6))
 axes[0].plot(history)
 axes[0].set_xlabel('epoch')
 axes[0].set_ylabel('Loss')
-decision_boundary(single_layer, X, y, ax=axes[1])
+decision_boundary(model, X, y, ax=axes[1])
 plt.plot()
 ```
 
