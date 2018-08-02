@@ -11,7 +11,7 @@ conda install -c defusco scratchnet
 ## Quick start
 This package includes a dataset generator.
 
-```{python}
+```python
 from scratchnet.datasets import make_spiral
 
 X, y = make_spiral(n_samples=600, n_features=2, n_classes=2)
@@ -21,7 +21,7 @@ X, y = make_spiral(n_samples=600, n_features=2, n_classes=2)
 
 Now we can create a multi-layer neural network
 
-```{python}
+```python
 from scratchnet.networks import Network
 from scratchnet.activations import Tanh, Sigmoid
 
@@ -34,7 +34,7 @@ model.add_layer(1, Sigmoid(), random_state=42)
 
 And train the network according to the supplied loss function.
 
-```{python}
+```python
 from scratchnet.losses import CrossEntropy
 
 history = model.train(X, y, CrossEntropy(), epochs=20000)
@@ -47,7 +47,7 @@ print(model.score(X, y))
 
 And finally let's plot the decision boundary.
 
-```{python}
+```python
 from scratchnet.plots import decision_boundary
 
 import matplotlib.pyplot as plt
