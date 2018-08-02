@@ -26,8 +26,8 @@ from scratchnet.networks import Network
 from scratchnet.activations import Tanh, Sigmoid
 
 model = Network(n_features=2)
-model.add_layer(128, Tanh(), random_state=42)
-model.add_layer(128, Tanh(), random_state=42)
+model.add_layer(16, Tanh(), random_state=42)
+model.add_layer(8, Tanh(), random_state=42)
 model.add_layer(1, Sigmoid(), random_state=42)
 
 ```
