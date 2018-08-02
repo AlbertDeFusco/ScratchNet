@@ -37,7 +37,7 @@ And train the network according to the supplied loss function.
 ```python
 from scratchnet.losses import CrossEntropy
 
-history = model.train(X, y, CrossEntropy(), epochs=20000)
+history = model.train(X, y, loss=CrossEntropy(), epochs=20000)
 print(model.score(X, y))
 ```
 
