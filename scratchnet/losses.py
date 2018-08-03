@@ -5,4 +5,4 @@ class CrossEntropy(object):
         return -(T * np.log(y) + (1 - T) * np.log(1 - y)).mean()
 
     def gradient(self, y, T):
-        return (y - T) / y.shape[0]
+        return (y - T) / (y * (1 - y)) / y.shape[0]
