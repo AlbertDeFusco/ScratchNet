@@ -20,6 +20,9 @@ class Layer(object):
 
         self.bias = _bias
         self.weights = _weights
+    
+    def count_parameters(self):
+        return self.weights.size + self.bias.size
 
     def forward(self, X):
         self._input = X
@@ -53,10 +56,13 @@ class Network(object):
             input_features = self.features
 
         if activation is None:
-            activation = lambda x:s
+            activation = lambda x:x
 
         _layer = Layer(nodes, input_features, activation, **kwargs)
         self.layers.append(_layer)
+    
+    def count_parameters(self):
+        return sum(l.count_parameters() for l in self.layers)
 
     def predict(self, X):
         self.layer_outputs = []
@@ -84,7 +90,7 @@ class Network(object):
 
     def train(self, X, t, loss, epochs=1000, learning_rate=0.1):
         history = []
-        for epoch in range(epochs):
+        for _ in range(epochs):
             y = self.predict(X).squeeze()
             output_grad = loss.gradient(y, t).reshape((-1,1))
 
