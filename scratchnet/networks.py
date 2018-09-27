@@ -1,4 +1,7 @@
 import numpy as np
+##from losses import SoftmaxCrossEntropyWithLogits
+from scratchnet.losses import SoftmaxCrossEntropyWithLogits
+## i didn't actually install this so the above import may not be correct ???
 
 class Layer(object):
     def __init__(self, nodes, features, activation, initial_weights=None, initial_bias=None, random_state=None):
@@ -20,7 +23,7 @@ class Layer(object):
 
         self.bias = _bias
         self.weights = _weights
-    
+
     def count_parameters(self):
         return self.weights.size + self.bias.size
 
@@ -60,7 +63,7 @@ class Network(object):
 
         _layer = Layer(nodes, input_features, activation, **kwargs)
         self.layers.append(_layer)
-    
+
     def count_parameters(self):
         return sum(l.count_parameters() for l in self.layers)
 
@@ -91,8 +94,12 @@ class Network(object):
     def train(self, X, t, loss, epochs=1000, learning_rate=0.1):
         history = []
         for _ in range(epochs):
-            y = self.predict(X).squeeze()
-            output_grad = loss.gradient(y, t).reshape((-1,1))
+            if type(loss) is SoftmaxCrossEntropyWithLogits:
+                y = self.predict(X)
+                output_grad = loss.gradient(y, t)
+            else:
+                y = self.predict(X).squeeze()
+                output_grad = loss.gradient(y, t).reshape((-1,1))
 
             for layer in reversed(self.layers):
                 cached_input = layer._input

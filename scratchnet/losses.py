@@ -1,4 +1,6 @@
 import numpy as np
+from scipy.special import logsumexp
+from pandas import get_dummies
 
 class CrossEntropy(object):
     def __call__(self, y, T):
@@ -23,16 +25,16 @@ class CrossEntropyWithLogits(object):
         return (s - T) / y.shape[0]
 
 class SoftmaxCrossEntropyWithLogits(object):
-    from pandas import get_dummies
+
     def __call__(self, y, T):
         ## y is logits from previous layers and
         ## T is the multiclass labels and should range in value 0 to k
         ## with k + 1 equal to total number of unique labels
         ym = y.max(1)[:, np.newaxis]
-        T_zip_y = zip(T,y-ym)
-        return -np.array([e2[e1] - logsumexp(e2) for e1,e2 in T_zip_y]).mean()
+        z = y-ym
+        return -((get_dummies(T) * z).sum(1) - logsumexp(z, 1)).mean(0)
     def gradient(self, y, T):
         ym = y.max(1)[:, np.newaxis]
         eym = np.exp(y-ym)
         sm = eym / eym.sum(1)[:,np.newaxis]
-        return sm - get_dummies(y)
+        return (sm - get_dummies(T)).values / y.shape[0]
